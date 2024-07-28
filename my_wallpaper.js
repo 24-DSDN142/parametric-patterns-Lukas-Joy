@@ -1,219 +1,259 @@
-//your parameter variables go here!
-let length = 50; //Influence strength for the Bezier curves
 let AngleMin = 45;
-let AngleMax = 135;
-let Circles = false; //true or false 
+// Your parameter variables go here!
+let CanvasX = 200;
+let CanvasY = 200;
 let Grid = true;
-let SeedRandom = false;
-let Seed = 10;
 let ReadyToPrint = false;
-let DrawInfluenceLines = false;
-
+var BorderType = 2; //either 1 Spirals or 2 SnakesNPillars or 3 Labyrinth
+let BorderThickness = 50
+let BorderColour1 = (0);
+let BorderColour2 = (135);
+let BorderColour3 = (255);
 
 function setup_wallpaper(pWallpaper) {
-  if (Grid = true){pWallpaper.output_mode(GRID_WALLPAPER);}
-  else 
-  {pWallpaper.output_mode(DEVELOP_GLYPH);
+  if (Grid === true) {
+    pWallpaper.output_mode(GRID_WALLPAPER);
+  } else {
+    pWallpaper.output_mode(DEVELOP_GLYPH);
   }
 
   pWallpaper.resolution(FIT_TO_SCREEN);
 
   if (ReadyToPrint === true) {
     pWallpaper.show_guide(false);
-  }
-  else {
-    pWallpaper.show_guide(true); 
-  }
-
-  //Random Seed Option
-  if (SeedRandom = true){
-  SeedPick = random(0,100)
-  }
-  else{
-  SendPick = Seed
+  } else {
+    pWallpaper.show_guide(true);
   }
 
-  //Grid settings
-  pWallpaper.grid_settings.cell_width  = 200;
-  pWallpaper.grid_settings.cell_height = 200;
-  pWallpaper.grid_settings.row_offset  = 0;
+  // Grid settings
+  pWallpaper.grid_settings.cell_width = CanvasX;
+  pWallpaper.grid_settings.cell_height = CanvasY;
+  pWallpaper.grid_settings.row_offset = 0;
+
+  //Other Settings
+  colorMode(RGB, 255)
 }
 
 function wallpaper_background() {
-  background(240, 255, 240); //light honeydew green colour
+  background(240, 255, 240); // light honeydew green color
 }
 
-function my_symbol() { // do not rename this function. Treat this similarly to a Draw function
-  //Set seed for consistant randomness lines
-  randomSeed(SeedPick);
+function my_symbol() {
+	createBorder(BorderType, BorderThickness)
+	circle(100,100,100)
+}
 
-  //Set random angles
-  let angleT1B1 = random(AngleMin, AngleMax); // Random angle between AngleMin and AngleMax degrees
-  let angleT2B2 = random(AngleMin, AngleMax); // Random angle between AngleMin and AngleMax degrees
-  let angleT3B3 = random(AngleMin, AngleMax); // Random angle between AngleMin and AngleMax degrees
-  let angleL1R1 = random(AngleMin, AngleMax); // Random angle between AngleMin and AngleMax degrees
-  let angleL2R2 = random(AngleMin, AngleMax); // Random angle between AngleMin and AngleMax degrees
-  let angleL3R3 = random(AngleMin, AngleMax); // Random angle between AngleMin and AngleMax degrees
+function createBorder(Type, BorderThickness){
+	if(Type === 1){
+		push()
+		Border1(0, 0, 0, BorderThickness)
+		pop()
+		
+		push()
+		Border1(CanvasX,0,90,BorderThickness)
+		pop()
 
- //Co-ordinate Variables
-  let x1T1B1 = 100/3; //Top Bottom Collumn 1
-  let x1T2B2 = 100; //Top Bottom Collumn 2
-  let x1T3B3 = 200-(100/3); //Top Bottom Collumn 3
-  let y1T = 0; //Top Edge
-  let y1B = 200; //Bottom Edge
-  let x1L = 0; //Left Edge
-  let x1R = 200; //Right Edge
-  let y1L1R1 = 100/3; //Left Right Collumn 1
-  let y1L2R2 = 100; //Left Right Collumn 2
-  let y1L3R3 = 200-(100/3); //Left Right Collumn 3
+		push()
+		Border1(CanvasX,CanvasY,180,BorderThickness)
+		pop()
 
-//Circles
-  if (Circles === true) {
-  //Top
-    circle(x1T1B1, y1T, 10); //Top Circle 1
-    circle(x1T2B2, y1T, 20); //Top Circle 2
-    circle(x1T3B3, y1T, 30); //Top Circle 3
-  //Bottom
-    circle(x1T1B1, y1B, 10); //Bottom Circle 1
-    circle(x1T2B2, y1B, 20); //Bottom Circle 2
-    circle(x1T3B3, y1B, 30); //Bottom Circle 3
-  //Left
-    circle(x1L, y1L1R1, 10); //Left Circle 1
-    circle(x1L, y1L2R2, 20); //Left Circle 2
-    circle(x1L, y1L3R3, 30); //Left Circle 3
-  //Right
-    circle(x1R, y1L1R1, 10); //Right Circle 1
-    circle(x1R, y1L2R2, 20); //Right Circle 2
-    circle(x1R, y1L3R3, 30); //Right Circle 3
-  }
+		push()
+		Border1(0,CanvasY,270,BorderThickness)
+		pop()
+		
+		push()
+		Spiral(0, BorderThickness)
+		Spiral(8 * BorderThickness / 9, BorderThickness)
+		pop()
+	}
+	if(Type === 2){
+		push()
+		Border2(0, 0, 0, BorderThickness)
+		pop()
+		
+		push()
+		Border2(CanvasX,0,90,BorderThickness)
+		pop()
 
-//Influence Lines
-  //Top1 x1T1B1, y1T
-    //Calculation
-      let x2T1 = x1T1B1 + length * cos(angleT1B1);
-      let y2T1 = y1T + length * sin(angleT1B1);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1T1B1, y1T, x2T1, y2T1);
-    }
+		push()
+		Border2(CanvasX,CanvasY,180,BorderThickness)
+		pop()
 
-  //Top2 x1T2B2, y1T
-    //Calculation
-    let x2T2 = x1T2B2 + length * cos(angleT2B2);
-    let y2T2 = y1T + length * sin(angleT2B2);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1T2B2, y1T, x2T2, y2T2);
-    }
-  //Top3 x1T3B3, y1T
-    //Calculation
-    let x2T3 = x1T3B3 + length * cos(angleT3B3);
-    let y2T3 = y1T + length * sin(angleT3B3);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1T3B3, y1T, x2T3, y2T3);  
-    }
+		push()
+		Border2(0,CanvasY,270,BorderThickness)
+		pop()
+		
+		push()
+		SnakesNPillars(0, BorderThickness)
+		SnakesNPillars(16*BorderThickness/17, BorderThickness)
 
-  //Bottom1 x1T1B1, y1B
-    //Calculation
-      let x2B1 = x1T1B1 - length * cos(angleT1B1);
-      let y2B1 = y1B - length * sin(angleT1B1);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1T1B1, y1B, x2B1, y2B1);
-    }
+		pop()
+	}
+	if(Type === 3){
+		push()
+		Border3(0, 0, 0, BorderThickness)
+		pop()
+		
+		push()
+		Border3(CanvasX,0,90,BorderThickness)
+		pop()
 
-  //Bottom2 x1T2B2, y1B
-    //Calculation
-    let x2B2 = x1T2B2 - length * cos(angleT2B2);
-    let y2B2 = y1B - length * sin(angleT2B2);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1T2B2, y1B, x2B2, y2B2);
-    }
+		push()
+		Border3(CanvasX,CanvasY,180,BorderThickness)
+		pop()
 
-  //Bottom2 x1T3B3, y1B
-    //Calculation
-    let x2B3 = x1T3B3 - length * cos(angleT3B3);
-    let y2B3 = y1B - length * sin(angleT3B3);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1T3B3, y1B, x2B3, y2B3);  
-    }
+		push()
+		Border3(0,CanvasY,270,BorderThickness)
+		pop()
+		
+		push()
+		Labyrinth(0, BorderThickness)
+		pop()
+	}
+}
 
-  //Left1 x1L, y1L1R1
-    //Calculation
-    let x2L1 = x1L + length * cos(angleL1R1 - 90);
-    let y2L1 = y1L1R1 + length * sin(angleL1R1 - 90);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1L, y1L1R1, x2L1, y2L1);
-    }
+function Border1(OriginX, OriginY, Direction, BorderThickness){
+	translate(OriginX, OriginY)
+	rotate(Direction);
+	let Offset = 8 * BorderThickness / 9;
+	Spiral(0,BorderThickness);
+	let x = 0;
+	while(x <(200-2*BorderThickness)) {
+		Spiral(Offset,BorderThickness);
+		x += Offset
+	}
 
-  //Left2 x1L, y1L2R2
-    //Calculation
-    let x2L2 = x1L + length * cos(angleL2R2 - 90);
-    let y2L2 = y1L2R2 + length * sin(angleL2R2 - 90);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1L, y1L2R2, x2L2, y2L2);
-    }
+}
 
-  //Left3 x1L, y1L3R3
-    //Calculation
-    let x2L3 = x1L + length * cos(angleL3R3 - 90);
-    let y2L3 = y1L3R3 + length * sin(angleL3R3 - 90);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1L, y1L3R3, x2L3, y2L3);
-    }
+function Spiral(Offset, BorderThickness){
+	translate(Offset, 0);
+	let SquareSize = BorderThickness / 9;
+	let Squares = [
+		[2, 2, 2, 2, 2, 2, 2, 2],
+		[1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 1, 1, 1, 1, 1, 0, 1],
+        [0, 1, 0, 0, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0, 0, 0, 1],
+        [0, 1, 0, 1, 1, 1, 1, 1],
+        [0, 1, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+		[2, 2, 2, 2, 2, 2, 2, 2]
+	];
 
-  //Right1 x1R, y1L1R1
-    //Calculation
-    let x2R1 = x1R + length * cos(angleL1R1 + 90);
-    let y2R1 = y1L1R1 + length * sin(angleL1R1 + 90);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1R, y1L1R1, x2R1, y2R1);
-    }
+	for (let row = 0; row < Squares.length; row ++){
+		for (let column = 0; column < Squares[row].length; column ++){
+			if(Squares[row][column] === 1){
+				fill(BorderColour1);
+			}
+			if(Squares[row][column] === 0){
+				fill(BorderColour3);
+			}
+			if(Squares[row][column] === 2){
+				fill(BorderColour2);
+			}
+			square(column*SquareSize, row*SquareSize, SquareSize)
+		}
+	}
+}
 
-  //Right2 x1R, y1L2R2
-    //Calculation
-    let x2R2 = x1R + length * cos(angleL2R2 + 90);
-    let y2R2 = y1L2R2 + length * sin(angleL2R2 + 90);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1R, y1L2R2, x2R2, y2R2);
-    }
+function Border2(OriginX, OriginY, Direction, BorderThickness){
+	translate(OriginX, OriginY)
+	rotate(Direction);
+	let Offset = 16 * BorderThickness / 17;
+	SnakesNPillars(0,BorderThickness);
+	let x = 0;
+	while(x <(200-2*BorderThickness)) {
+		SnakesNPillars(Offset,BorderThickness);
+		x += Offset
+	}
 
-  //Right3 x1R, y1L3R3
-    //Calculation
-    let x2R3 = x1R + length * cos(angleL3R3 + 90);
-    let y2R3 = y1L3R3 + length * sin(angleL3R3 + 90);
-    //Draw Line
-    if (DrawInfluenceLines === true){
-    line(x1R, y1L3R3, x2R3, y2R3);
-    }
+}
 
-  let points = [
-    [x1T1B1, y1T, x2T1, y2T1, x1T1B1, y1B, x2B1, y2B1],//Top Bottom 1,
-    [x1T2B2, y1T, x2T2, y2T2, x1T2B2, y1B, x2B2, y2B2],//Top Bottom 2,
-    [x1T3B3, y1T, x2T3, y2T3, x1T2B2, y1B, x2B3, y2B2],//Top Bottom 3,
-    [x1L, y1L1R1, x2L1, y2L1, x1R, y1L1R1, x2R1, y2R1],//Left Right 1,
-    [x1L, y1L2R2, x2L2, y2L2, x1R, y1L2R2, x2R2, y2R2],//Left Right 2
-    [x1L, y1L3R3, x2L3, y2L3, x1R, y1L3R3, x2R3, y2R3],//Left Right 3
-  ]
-  noFill();
+function SnakesNPillars(Offset, BorderThickness){
+	translate(Offset, 0);
+	let SquareSize = BorderThickness / 17;
+	let Squares = [
+		[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+		[2,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1],
+		[2,1,0,1,2,1,0,0,0,0,0,0,0,0,0,1],
+		[2,1,1,1,2,1,0,1,1,1,1,1,1,1,0,1],
+		[2,2,2,2,2,1,0,1,2,2,2,2,2,1,0,1],
+		[1,1,1,1,2,1,0,1,2,1,1,1,1,1,1,1],
+		[0,0,0,1,2,1,0,1,2,1,0,0,0,0,0,0],
+		[1,1,0,1,2,1,0,1,2,1,0,1,1,1,1,1],
+		[2,1,0,1,2,1,0,1,2,1,0,1,2,1,0,1],
+		[1,1,1,1,1,1,0,1,2,1,0,1,2,1,0,1],
+		[0,0,0,0,0,0,0,1,2,1,0,1,2,1,0,0],
+		[1,1,1,1,1,1,1,1,2,1,0,1,2,1,1,1],
+		[2,1,0,1,2,2,2,2,2,1,0,1,2,2,2,2],
+		[2,1,0,1,1,1,1,1,1,1,0,1,2,1,1,1],
+		[2,1,0,0,0,0,0,0,0,0,0,1,2,1,0,1],
+		[2,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1],
+		[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+	];
 
-  for (let x = 0; x < points.length - 1; x++) {
-    let [x1, y1, x2, y2, x3, y3, x4, y4] = points[x];
-    let [nextX1, nextY1, nextX2, nextY2, nextX3, nextY3, nextX4, nextY4] = points[x + 1];
+	for (let row = 0; row < Squares.length; row ++){
+		for (let column = 0; column < Squares[row].length; column ++){
+			if(Squares[row][column] === 1){
+				fill(BorderColour1);
+			}
+			if(Squares[row][column] === 0){
+				fill(BorderColour2);
+			}
+			if(Squares[row][column] === 2){
+				fill(BorderColour3);
+			}
+			square(column*SquareSize, row*SquareSize, SquareSize)
+	
+		}
+	}
+}
 
-    bezier(x1, y1, x2, y2, nextX4, nextY4, nextX3, nextY3);
+function Border3(OriginX, OriginY, Direction, BorderThickness){
+	translate(OriginX, OriginY)
+	rotate(Direction);
+	let Offset = 21 * BorderThickness / 9;
+	Labyrinth(0,BorderThickness);
+	let x = 0;
+	while(x <(200-2*BorderThickness)) {
+		Labyrinth(Offset,BorderThickness);
+		x += Offset
+	}
 
-    let [lastX1, lastY1, lastX2, lastY2, lastX3, lastY3, lastX4, lastY4] = points[points.length - 1];
-    let [firstX1, firstY1, firstX2, firstY2, firstX3, firstY3, firstX4, firstY4] = points[0];
+}
 
-    bezier(lastX4, lastY4, lastX3, lastY3, firstX2, firstY2, firstX1, firstY1);
-  }
-} 
+function Labyrinth(Offset, BorderThickness){
+	translate(Offset, 0);
+	let SquareSize = BorderThickness / 9;
+	let Squares = [
+		[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+		[0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,0],
+		[1,1,1,1,1,1,1,1,1,0,1,1,0,1,0,1,0,1,1,1,0],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,0],
+		[1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0],
+		[1,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+		[1,1,1,0,1,0,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0],
+		[0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0],
+		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+		[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+	];
+
+	for (let row = 0; row < Squares.length; row ++){
+		for (let column = 0; column < Squares[row].length; column ++){
+			if(Squares[row][column] === 1){
+				fill(BorderColour1);
+			}
+			if(Squares[row][column] === 2){
+				fill(BorderColour2);
+			}
+			if(Squares[row][column] === 0){
+				fill(BorderColour3);
+			}
+			square(column*SquareSize, row*SquareSize, SquareSize)
+	
+		}
+	}
+}
