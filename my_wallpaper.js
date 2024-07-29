@@ -1,22 +1,27 @@
 // Your parameter variables go here!
 let CanvasX = 200;
 let CanvasY = 200;
-let Grid = true;
+let Grid = false;
 let ReadyToPrint = false;
-let BorderType = 2; //either 1 Spirals or 2 SnakesNPillars or 3 Labyrinth or 4 no borders
-let BorderThickness = 50
-let BorderColour1 = (0);
-let BorderColour2 = (135);
-let BorderColour3 = (255);
-let BackgroundType = 3; //
-let BackgroundVariation = 3;  //
-let BackgroundScale = 40;
-let BackgroundFlipHorizontal = false;
+let BorderType = 1; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth or 4 no borders
+let BorderThickness = 25;
+let BorderColour1 = color(0,0,0);
+let BorderColour2 = color(135,135,135);
+let BorderColour3 = color(112, 219, 135);
+let BackgroundType = 1; //1 PeaksNValleys or 2 CautionTape or 3 Crosses
+let BackgroundVariation = 2;  //1 low detail or 2 and 3 high detail
+let BackgroundScale = 25;
+let BackgroundFlipHorizontal = true;
 let BackgroundFlipVertical = false;
-let BackgroundColour1 = (0);
-let BackgroundColour2 = (125);
-let BackgroundColour3 = (255); //not avaliable for all variations
-
+let BackgroundColour1 = color(0,0,0);
+let BackgroundColour2 = color(125,123,132);
+let BackgroundColour3 = color(255,255,255); //only available for variation 3
+let IconType = 1;
+let IconVariation = 2;
+let IconScale = 125;
+let IconColour1 = color(0,0,0);
+let IconColour2 = color(125,123,132);
+let IconColour3 = color(255,255,255);
 function setup_wallpaper(pWallpaper) {
   if (Grid === true) {
     pWallpaper.output_mode(GRID_WALLPAPER);
@@ -40,11 +45,9 @@ function setup_wallpaper(pWallpaper) {
   //Other Settings
   colorMode(RGB, 255)
 }
-
 function wallpaper_background() {
   background(240, 255, 240); // light honeydew green color
 }
-
 function my_symbol() {
 	if(BackgroundFlipHorizontal === true && BackgroundFlipVertical === false){
 		push();
@@ -73,12 +76,11 @@ function my_symbol() {
 		push();
 		translate(-BackgroundScale,0)
 		createBackground(BackgroundType, BackgroundVariation, BackgroundScale);
-		pop();
-	}
+	
 	createBorder(BorderType, BorderThickness);
-
+	createIcon(IconType, IconVariation, IconScale);
+	}
 }
-
 function createBorder(Type, BorderThickness){
 	if(Type === 1){
 		push()
@@ -147,7 +149,6 @@ function createBorder(Type, BorderThickness){
 		pop()
 	}
 }
-
 function createBackground(Type, Variation, Scale){
 	if(Type === 1){
 		if(Variation === 1){
@@ -184,7 +185,44 @@ function createBackground(Type, Variation, Scale){
 	}
 
 }
-
+function createIcon(Type, Variation, Scale){
+	push();
+	translate(((CanvasX-Scale)/2),((CanvasY-Scale)/2))
+	if(Type === 1){
+		if(Variation === 1){
+			Icon1(1, Scale);
+		}
+		if(Variation === 2){
+			Icon1(2, Scale);
+		}
+		if(Variation === 3){
+			Icon1(3, Scale);
+		}
+	}
+	if(Type === 2){
+		if(Variation === 1){
+			Background2(1, Scale);
+		}
+		if(Variation === 2){
+			Background2(2, Scale);
+		}
+		if(Variation === 3){
+			Background2(3, Scale);
+		}
+	}
+	if(Type === 3){
+		if(Variation === 1){
+			Background3(1, Scale);
+		}
+		if(Variation === 2){
+			Background3(2, Scale);
+		}
+		if(Variation === 3){
+			Background3(3, Scale);
+		}
+	}
+	pop();
+}
 function Border1(OriginX, OriginY, Direction, BorderThickness){
 	translate(OriginX, OriginY)
 	rotate(Direction);
@@ -197,7 +235,6 @@ function Border1(OriginX, OriginY, Direction, BorderThickness){
 	}
 
 }
-
 function Spiral(Offset, BorderThickness){
 	translate(Offset, 0);
 	let SquareSize = BorderThickness / 9;
@@ -230,7 +267,6 @@ function Spiral(Offset, BorderThickness){
 		}
 	}
 }
-
 function Border2(OriginX, OriginY, Direction, BorderThickness){
 	translate(OriginX, OriginY)
 	rotate(Direction);
@@ -243,7 +279,6 @@ function Border2(OriginX, OriginY, Direction, BorderThickness){
 	}
 
 }
-
 function SnakesNPillars(Offset, BorderThickness){
 	translate(Offset, 0);
 	let SquareSize = BorderThickness / 17;
@@ -283,7 +318,6 @@ function SnakesNPillars(Offset, BorderThickness){
 		}
 	}
 }
-
 function Border3(OriginX, OriginY, Direction, BorderThickness){
 	translate(OriginX, OriginY)
 	rotate(Direction);
@@ -296,7 +330,6 @@ function Border3(OriginX, OriginY, Direction, BorderThickness){
 	}
 
 }
-
 function Labyrinth(Offset, BorderThickness){
 	translate(Offset, 0);
 	let SquareSize = BorderThickness / 9;
@@ -330,7 +363,6 @@ function Labyrinth(Offset, BorderThickness){
 		}
 	}
 }
-
 function Background1(Variation, Scale) {
     translate(Scale, 0);
     for (let row = 0; row < CanvasX / Scale; row++) {
@@ -350,7 +382,6 @@ function Background1(Variation, Scale) {
         }
     }
 }
-
 function PeaksNValleys1(Scale){
 	let SquareSize = Scale / 4;
 	let Squares = [
@@ -405,7 +436,6 @@ function PeaksNValleys2(Scale){
 		}
 	}
 }
-
 function PeaksNValleys3(Scale){
 	let SquareSize = Scale / 8;
 	let Squares = [
@@ -435,7 +465,6 @@ function PeaksNValleys3(Scale){
 		}
 	}
 }
-
 function Background2(Variation, Scale) {
     translate(Scale, 0);
     for (let row = 0; row < CanvasX / Scale; row++) {
@@ -455,7 +484,6 @@ function Background2(Variation, Scale) {
         }
     }
 }
-
 function CautionTape1(Scale){
 	let SquareSize = Scale / 4;
 	let Squares = [
@@ -510,7 +538,6 @@ function CautionTape2(Scale){
 		}
 	}
 }
-
 function CautionTape3(Scale){
 	let SquareSize = Scale / 8;
 	let Squares = [
@@ -540,7 +567,6 @@ function CautionTape3(Scale){
 		}
 	}
 }
-
 function Background3(Variation, Scale) {
     translate(Scale, 0);
     for (let row = 0; row < CanvasX / Scale; row++) {
@@ -560,7 +586,6 @@ function Background3(Variation, Scale) {
         }
     }
 }
-
 function Crosses1(Scale){
 	let SquareSize = Scale / 10;
 	let Squares = [
@@ -633,7 +658,6 @@ function Crosses2(Scale){
 		}
 	}
 }
-
 function Crosses3(Scale){
 	let SquareSize = Scale / 20;
 	let Squares = [
@@ -672,6 +696,107 @@ function Crosses3(Scale){
 			}
 			square(column*SquareSize, row*SquareSize, SquareSize)
 	
+		}
+	}
+}
+function Icon1(Variation,Scale){
+			if(Variation === 1){
+				Amphora1(Scale);
+			}
+			if(Variation === 2){
+				Amphora2(Scale);
+			}
+			if(Variation === 3){
+				Amphora3(Scale);
+			}
+}
+function Amphora1(Scale){
+	let SquareSize = Scale / 16;
+	let Squares = [
+		[3,3,3,3,2,2,2,2,2,2,2,2,3,3,3,3],
+		[3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3],
+		[3,2,2,3,3,0,0,0,1,1,1,3,3,2,2,3],
+		[3,2,3,2,3,0,0,0,1,1,1,3,2,3,2,3],
+		[3,2,3,3,0,0,0,1,1,1,1,1,3,3,2,3],
+		[3,2,3,0,0,0,0,1,1,1,1,1,1,3,2,3],
+		[3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
+		[3,3,0,0,0,2,0,1,1,1,2,1,1,1,3,3],
+		[3,3,2,2,0,2,0,2,2,1,2,1,2,2,3,3],
+		[3,3,2,2,0,0,0,2,2,1,1,1,2,2,3,3],
+		[3,3,3,2,2,2,2,2,2,2,2,2,2,3,3,3],
+		[3,3,3,3,0,0,0,1,1,1,1,1,3,3,3,3],
+		[3,3,3,3,3,0,0,0,1,1,1,3,3,3,3,3],
+		[3,3,3,3,3,3,0,0,1,1,3,3,3,3,3,3],
+		[3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3],
+		[3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3]
+	];
+
+	for (let row = 0; row < Squares.length; row ++){
+		for (let column = 0; column < Squares[row].length; column ++){
+			stroke(1);
+			if(Squares[row][column] === 0){
+				fill(IconColour1);
+			}
+			if(Squares[row][column] === 1){
+				fill(IconColour2);
+			}
+			if(Squares[row][column] === 2){
+				fill(IconColour3);
+			}
+			if(Squares[row][column] === 3){
+				noFill();
+				noStroke();
+			}
+			square(column*SquareSize, row*SquareSize, SquareSize);
+		}
+	}
+}
+function Amphora2(Scale){
+	let SquareSize = Scale / 24;
+	let Squares = [
+		[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+		[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+		[3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+		[3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+		[3,1,1,1,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,1,1,1,3],
+		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+		[1,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,1],
+		[1,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,1],
+		[3,1,1,1,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,1,1,1,3],
+		[3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3],
+		[3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
+		[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+		[3,3,0,0,0,0,1,1,1,2,2,2,2,2,2,1,1,1,2,2,2,2,3,3],
+		[3,3,1,1,1,0,1,1,1,2,1,1,1,1,2,1,1,1,2,1,1,1,3,3],
+		[3,3,1,1,1,0,0,2,2,2,1,1,1,1,2,2,2,2,2,1,1,1,3,3],
+		[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+		[3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
+		[3,3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3],
+		[3,3,3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
+		[3,3,3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+		[3,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,3],
+		[3,3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
+		[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+		[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+	];
+
+	for (let row = 0; row < Squares.length; row ++){
+		for (let column = 0; column < Squares[row].length; column ++){
+			stroke(1);
+			if(Squares[row][column] === 1){
+				fill(IconColour1);
+			}
+			if(Squares[row][column] === 0){
+				fill(IconColour2);
+			}
+			if(Squares[row][column] === 2){
+				fill(IconColour3);
+			}
+			if(Squares[row][column] === 3){
+				noFill();
+				noStroke();
+			}
+			square(column*SquareSize, row*SquareSize, SquareSize);
 		}
 	}
 }
