@@ -3,25 +3,25 @@ let CanvasX = 200;
 let CanvasY = 200;
 let Grid = false;
 let ReadyToPrint = false;
-let BorderType = 1; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth or 4 no borders
+let BorderType = 2; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth or 4 no borders
 let BorderThickness = 25;
-let BorderColour1 = color(0,0,0);
-let BorderColour2 = color(135,135,135);
-let BorderColour3 = color(112, 219, 135);
+let BorderColour1 = (1,1,1);
+let BorderColour2 = (135,135,135);
+let BorderColour3 = (255, 255, 255);
 let BackgroundType = 1; //1 PeaksNValleys or 2 CautionTape or 3 Crosses
-let BackgroundVariation = 2;  //1 low detail or 2 and 3 high detail
+let BackgroundVariation = 3;  //1 low detail or 2 and 3 high detail
 let BackgroundScale = 25;
-let BackgroundFlipHorizontal = true;
-let BackgroundFlipVertical = false;
-let BackgroundColour1 = color(0,0,0);
-let BackgroundColour2 = color(125,123,132);
-let BackgroundColour3 = color(255,255,255); //only available for variation 3
-let IconType = 1;
-let IconVariation = 2;
+var BackgroundFlipHorizontal = true;
+var BackgroundFlipVertical = false;
+let BackgroundColour1 = (0,0,0);
+let BackgroundColour2 = (125,123,132);
+let BackgroundColour3 = (255,255,255); //only available for variation 3
+let IconType = 2; //1 Amphora
+let IconVariation = 1;
 let IconScale = 125;
-let IconColour1 = color(0,0,0);
-let IconColour2 = color(125,123,132);
-let IconColour3 = color(255,255,255);
+let IconColour1 = (0,0,0);
+let IconColour2 = (125,123,132);
+let IconColour3 = (255,255,255);
 function setup_wallpaper(pWallpaper) {
   if (Grid === true) {
     pWallpaper.output_mode(GRID_WALLPAPER);
@@ -76,10 +76,9 @@ function my_symbol() {
 		push();
 		translate(-BackgroundScale,0)
 		createBackground(BackgroundType, BackgroundVariation, BackgroundScale);
-	
+	}
 	createBorder(BorderType, BorderThickness);
 	createIcon(IconType, IconVariation, IconScale);
-	}
 }
 function createBorder(Type, BorderThickness){
 	if(Type === 1){
@@ -799,4 +798,209 @@ function Amphora2(Scale){
 			square(column*SquareSize, row*SquareSize, SquareSize);
 		}
 	}
+}
+function Amphora3(Scale){
+	let SquareSize = Scale / 22;
+	let Squares = [
+		[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3],
+		[3,3,3,1,1,1,1,3,0,0,0,2,2,2,3,1,1,1,1,3,3,3],
+		[3,3,3,1,3,3,1,1,1,1,1,1,1,1,1,1,3,3,1,3,3,3],
+		[3,3,3,1,1,3,3,0,0,0,2,2,2,2,2,3,3,1,1,3,3,3],
+		[3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3],
+		[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+		[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+		[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+		[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+		[3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3],
+		[3,3,3,3,0,0,0,1,1,2,2,2,2,1,1,2,2,2,3,3,3,3],
+		[3,3,3,3,1,1,0,1,1,2,1,1,2,1,1,2,1,1,3,3,3,3],
+		[3,3,3,3,1,1,0,1,1,2,1,1,2,1,1,2,1,1,3,3,3,3],
+		[3,3,3,3,1,1,0,2,2,2,1,1,2,2,2,2,1,1,3,3,3,3],
+		[3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3],
+		[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+		[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+		[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+		[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+		[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3],
+		[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3],
+		[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3]		
+	];
+
+	for (let row = 0; row < Squares.length; row ++){
+		for (let column = 0; column < Squares[row].length; column ++){
+			stroke(1);
+			if(Squares[row][column] === 1){
+				fill(IconColour1);
+			}
+			if(Squares[row][column] === 0){
+				fill(IconColour2);
+			}
+			if(Squares[row][column] === 2){
+				fill(IconColour3);
+			}
+			if(Squares[row][column] === 3){
+				noFill();
+				noStroke();
+			}
+			square(column*SquareSize, row*SquareSize, SquareSize);
+		}
+	}
+}
+
+function Icon2(Variation,Scale){
+	if(Variation === 1){
+		Collumn1(Scale);
+	}
+	if(Variation === 2){
+		Collumn2(Scale);
+	}
+	if(Variation === 3){
+		Collumn3(Scale);
+	}
+}
+function Collumn1(Scale){
+let SquareSize = Scale / 16;
+let Squares = [
+[3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
+[3,3,3,2,0,2,2,2,2,2,2,2,2,2,2,0,2,3,3,3],
+[3,3,3,2,0,0,2,2,2,2,2,2,2,2,0,0,2,3,3,3],
+[3,3,3,2,2,2,2,2,0,2,0,2,0,2,2,2,2,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
+[3,2,3,2,3,0,0,0,1,1,1,3,2,3,2,3],
+[3,2,3,3,0,0,0,1,1,1,1,1,3,3,2,3],
+[3,2,3,0,0,0,0,1,1,1,1,1,1,3,2,3],
+[3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
+[3,3,0,0,0,2,0,1,1,1,2,1,1,1,3,3],
+[3,3,2,2,0,2,0,2,2,1,2,1,2,2,3,3],
+[3,3,2,2,0,0,0,2,2,1,1,1,2,2,3,3],
+[3,3,3,2,2,2,2,2,2,2,2,2,2,3,3,3],
+[3,3,3,3,0,0,0,1,1,1,1,1,3,3,3,3],
+[3,3,3,3,3,0,0,0,1,1,1,3,3,3,3,3],
+[3,3,3,3,3,3,0,0,1,1,3,3,3,3,3,3],
+[3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3],
+[3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3]
+];
+
+for (let row = 0; row < Squares.length; row ++){
+for (let column = 0; column < Squares[row].length; column ++){
+	stroke(1);
+	if(Squares[row][column] === 0){
+		fill(IconColour1);
+	}
+	if(Squares[row][column] === 1){
+		fill(IconColour2);
+	}
+	if(Squares[row][column] === 2){
+		fill(IconColour3);
+	}
+	if(Squares[row][column] === 3){
+		noFill();
+		noStroke();
+	}
+	square(column*SquareSize, row*SquareSize, SquareSize);
+}
+}
+}
+function Collumn2(Scale){
+let SquareSize = Scale / 24;
+let Squares = [
+[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+[3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+[3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+[3,1,1,1,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,1,1,1,3],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+[1,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,1],
+[1,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,1],
+[3,1,1,1,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,1,1,1,3],
+[3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3],
+[3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
+[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+[3,3,0,0,0,0,1,1,1,2,2,2,2,2,2,1,1,1,2,2,2,2,3,3],
+[3,3,1,1,1,0,1,1,1,2,1,1,1,1,2,1,1,1,2,1,1,1,3,3],
+[3,3,1,1,1,0,0,2,2,2,1,1,1,1,2,2,2,2,2,1,1,1,3,3],
+[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+[3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
+[3,3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3],
+[3,3,3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
+[3,3,3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+[3,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,3],
+[3,3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
+[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+];
+
+for (let row = 0; row < Squares.length; row ++){
+for (let column = 0; column < Squares[row].length; column ++){
+	stroke(1);
+	if(Squares[row][column] === 1){
+		fill(IconColour1);
+	}
+	if(Squares[row][column] === 0){
+		fill(IconColour2);
+	}
+	if(Squares[row][column] === 2){
+		fill(IconColour3);
+	}
+	if(Squares[row][column] === 3){
+		noFill();
+		noStroke();
+	}
+	square(column*SquareSize, row*SquareSize, SquareSize);
+}
+}
+}
+function Collumn3(Scale){
+let SquareSize = Scale / 22;
+let Squares = [
+[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3],
+[3,3,3,1,1,1,1,3,0,0,0,2,2,2,3,1,1,1,1,3,3,3],
+[3,3,3,1,3,3,1,1,1,1,1,1,1,1,1,1,3,3,1,3,3,3],
+[3,3,3,1,1,3,3,0,0,0,2,2,2,2,2,3,3,1,1,3,3,3],
+[3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3],
+[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+[3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3],
+[3,3,3,3,0,0,0,1,1,2,2,2,2,1,1,2,2,2,3,3,3,3],
+[3,3,3,3,1,1,0,1,1,2,1,1,2,1,1,2,1,1,3,3,3,3],
+[3,3,3,3,1,1,0,1,1,2,1,1,2,1,1,2,1,1,3,3,3,3],
+[3,3,3,3,1,1,0,2,2,2,1,1,2,2,2,2,1,1,3,3,3,3],
+[3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3],
+[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+[3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
+[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+[3,3,3,3,3,3,0,0,0,2,2,2,2,2,2,2,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,0,0,0,2,2,2,2,2,3,3,3,3,3,3,3]		
+];
+
+for (let row = 0; row < Squares.length; row ++){
+for (let column = 0; column < Squares[row].length; column ++){
+	stroke(1);
+	if(Squares[row][column] === 1){
+		fill(IconColour1);
+	}
+	if(Squares[row][column] === 0){
+		fill(IconColour2);
+	}
+	if(Squares[row][column] === 2){
+		fill(IconColour3);
+	}
+	if(Squares[row][column] === 3){
+		noFill();
+		noStroke();
+	}
+	square(column*SquareSize, row*SquareSize, SquareSize);
+}
+}
 }
