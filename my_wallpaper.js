@@ -1,27 +1,26 @@
 // Your parameter variables go here!
-let CanvasX = 200;
-let CanvasY = 200;
+let CanvasX = 400;
+let CanvasY = 400;
 let Grid = false;
 let ReadyToPrint = false;
-let BorderType = 2; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth or 4 no borders
-let BorderThickness = 25;
-let BorderColour1 = (1,1,1);
-let BorderColour2 = (135,135,135);
-let BorderColour3 = (255, 255, 255);
-let BackgroundType = 1; //1 PeaksNValleys or 2 CautionTape or 3 Crosses
+let BorderType = 1; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth
+let BorderStyle = 3; //1 Four Side or 2 Two Side or 3 Top Bottom
+let BorderThickness = 50;
+let BorderColour1 = [1,1,1];
+let BorderColour2 = [135,120,170];
+let BorderColour3 = [255, 255, 255];
+let BackgroundType = 3; //1 PeaksNValleys or 2 CautionTape or 3 Crosses
 let BackgroundVariation = 3;  //1 low detail or 2 and 3 high detail
-let BackgroundScale = 25;
-var BackgroundFlipHorizontal = true;
-var BackgroundFlipVertical = false;
-let BackgroundColour1 = (0,0,0);
-let BackgroundColour2 = (125,123,132);
-let BackgroundColour3 = (255,255,255); //only available for variation 3
-let IconType = 2; //1 Amphora
-let IconVariation = 1;
+let BackgroundScale = 50;
+let BackgroundColour1 = [0,0,0];
+let BackgroundColour2 = [125,200,132];
+let BackgroundColour3 = [255,255,255]; //only available for variation 3
+let IconType = 0; //1 Amphora or 2 Column
+let IconVariation = 1; // 1 or 2 or 3 (only 1 Column Variation)
 let IconScale = 125;
-let IconColour1 = (0,0,0);
-let IconColour2 = (125,123,132);
-let IconColour3 = (255,255,255);
+let IconColour1 = [0,0,0];
+let IconColour2 = [125,123,132];
+let IconColour3 = [255,255,255];
 function setup_wallpaper(pWallpaper) {
   if (Grid === true) {
     pWallpaper.output_mode(GRID_WALLPAPER);
@@ -49,104 +48,155 @@ function wallpaper_background() {
   background(240, 255, 240); // light honeydew green color
 }
 function my_symbol() {
-	if(BackgroundFlipHorizontal === true && BackgroundFlipVertical === false){
-		push();
-		translate(CanvasX+BackgroundScale,CanvasY)
-		rotate(180);
-		createBackground(BackgroundType, BackgroundVariation, BackgroundScale);
-		pop();
-	}
-	if(BackgroundFlipHorizontal === false && BackgroundFlipVertical === true){
-		push();
-		translate(CanvasX,-BackgroundScale)
-		rotate(90);
-		createBackground(BackgroundType, BackgroundVariation, BackgroundScale);
-		pop();
-	}
-	if(BackgroundFlipHorizontal === true && BackgroundFlipVertical === true){
-		push();
-		translate(CanvasX+BackgroundScale,CanvasY)
-		rotate(180);
-		translate(CanvasX+BackgroundScale,-BackgroundScale)
-		rotate(90);
-		createBackground(BackgroundType, BackgroundVariation, BackgroundScale);
-		pop();
-	}
-	if(BackgroundFlipHorizontal === false && BackgroundFlipVertical === false){
-		push();
-		translate(-BackgroundScale,0)
-		createBackground(BackgroundType, BackgroundVariation, BackgroundScale);
-	}
-	createBorder(BorderType, BorderThickness);
+	push();
+	translate(-BackgroundScale,0)
+	createBackground(BackgroundType, BackgroundVariation, BackgroundScale);
+	pop();
+	createBorder(BorderType, BorderStyle, BorderThickness);
 	createIcon(IconType, IconVariation, IconScale);
 }
-function createBorder(Type, BorderThickness){
-	if(Type === 1){
-		push()
-		Border1(0, 0, 0, BorderThickness)
-		pop()
-		
-		push()
-		Border1(CanvasX,0,90,BorderThickness)
-		pop()
-
-		push()
-		Border1(CanvasX,CanvasY,180,BorderThickness)
-		pop()
-
-		push()
-		Border1(0,CanvasY,270,BorderThickness)
-		pop()
-		
-		push()
-		Spiral(0, BorderThickness)
-		Spiral(8 * BorderThickness / 9, BorderThickness)
-		pop()
+function createBorder(Type, Style, BorderThickness){
+	if(Style === 1){
+		if(Type === 1){
+			push()
+			Border1(0, 0, 0, BorderThickness)
+			pop()
+			
+			push()
+			Border1(CanvasX,0,90,BorderThickness)
+			pop()
+	
+			push()
+			Border1(CanvasX,CanvasY,180,BorderThickness)
+			pop()
+	
+			push()
+			Border1(0,CanvasY,270,BorderThickness)
+			pop()
+			
+			push()
+			Spiral(0, BorderThickness)
+			Spiral(8 * BorderThickness / 9, BorderThickness)
+			pop()
+		}
+		if(Type === 2){
+			push()
+			Border2(0, 0, 0, BorderThickness)
+			pop()
+			
+			push()
+			Border2(CanvasX,0,90,BorderThickness)
+			pop()
+	
+			push()
+			Border2(CanvasX,CanvasY,180,BorderThickness)
+			pop()
+	
+			push()
+			Border2(0,CanvasY,270,BorderThickness)
+			pop()
+			
+			push()
+			SnakesNPillars(0, BorderThickness)
+			SnakesNPillars(16*BorderThickness/17, BorderThickness)
+	
+			pop()
+		}
+		if(Type === 3){
+			push()
+			Border3(0, 0, 0, BorderThickness)
+			pop()
+			
+			push()
+			Border3(CanvasX,0,90,BorderThickness)
+			pop()
+	
+			push()
+			Border3(CanvasX,CanvasY,180,BorderThickness)
+			pop()
+	
+			push()
+			Border3(0,CanvasY,270,BorderThickness)
+			pop()
+			
+			push()
+			Labyrinth(0, BorderThickness)
+			pop()
+		}
 	}
-	if(Type === 2){
-		push()
-		Border2(0, 0, 0, BorderThickness)
-		pop()
-		
-		push()
-		Border2(CanvasX,0,90,BorderThickness)
-		pop()
+	if(Style === 2){
+		if(Type === 1){
+			push();
+			Border1(0, 0, 0, BorderThickness);
+			Spiral(-8 * BorderThickness / 9,BorderThickness);
+			pop();
+	
+			push()
+			Border1(CanvasX,CanvasY,180,BorderThickness);
+			Spiral(-8 * BorderThickness / 9,BorderThickness);
+			pop();
+		}
+		if(Type === 2){
+			push();
+			Border2(0, 0, 0, BorderThickness);
+			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
+			pop();
+			
+			push();
+			Border2(CanvasX,CanvasY,180,BorderThickness);
+			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
+			pop();
+		}
+		if(Type === 3){
+			push();
+			Border3(0, 0, 0, BorderThickness);
+			Labyrinth(21 * BorderThickness / 9,BorderThickness);
+			pop();
+			
+			push();
+			Border3(CanvasX,CanvasY,180,BorderThickness);
+			Labyrinth(21 * BorderThickness / 9,BorderThickness);
+			pop();
+		}
 
-		push()
-		Border2(CanvasX,CanvasY,180,BorderThickness)
-		pop()
-
-		push()
-		Border2(0,CanvasY,270,BorderThickness)
-		pop()
-		
-		push()
-		SnakesNPillars(0, BorderThickness)
-		SnakesNPillars(16*BorderThickness/17, BorderThickness)
-
-		pop()
 	}
-	if(Type === 3){
-		push()
-		Border3(0, 0, 0, BorderThickness)
-		pop()
-		
-		push()
-		Border3(CanvasX,0,90,BorderThickness)
-		pop()
+	if(Style === 3){
+		if(Type === 1){
+			push();
+			Border1(BorderThickness, 0, 90, BorderThickness);
+			Spiral(-8 * BorderThickness / 9,BorderThickness);
+			pop();
+	
+			push()
+			Border1(CanvasX-BorderThickness,CanvasY,270, BorderThickness);
+			Spiral(-8 * BorderThickness / 9,BorderThickness);
+			pop();
+		}
+		if(Type === 2){
+			push();
+			Border2(BorderThickness, 0, 90, BorderThickness);
+			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
+			pop();
+			
+			push();
+			Border2(CanvasX-BorderThickness,CanvasY,270,BorderThickness);
+			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
+			pop();
+		}
+		if(Type === 3){
+			push();
+			Border3(BorderThickness, 0, 90, BorderThickness);
+			Labyrinth(21 * BorderThickness / 9,BorderThickness);
+			pop();
+			
+			push();
+			Border3(CanvasX-BorderThickness,CanvasY,270,BorderThickness);
+			Labyrinth(21 * BorderThickness / 9,BorderThickness);
+			pop();
+		}
 
-		push()
-		Border3(CanvasX,CanvasY,180,BorderThickness)
-		pop()
-
-		push()
-		Border3(0,CanvasY,270,BorderThickness)
-		pop()
-		
-		push()
-		Labyrinth(0, BorderThickness)
-		pop()
 	}
+	
 }
 function createBackground(Type, Variation, Scale){
 	if(Type === 1){
@@ -200,24 +250,24 @@ function createIcon(Type, Variation, Scale){
 	}
 	if(Type === 2){
 		if(Variation === 1){
-			Background2(1, Scale);
+			Icon2(1, Scale);
 		}
 		if(Variation === 2){
-			Background2(2, Scale);
+			Icon2(2, Scale);
 		}
 		if(Variation === 3){
-			Background2(3, Scale);
+			Icon2(3, Scale);
 		}
 	}
 	if(Type === 3){
 		if(Variation === 1){
-			Background3(1, Scale);
+			Icon3(1, Scale);
 		}
 		if(Variation === 2){
-			Background3(2, Scale);
+			Icon3(2, Scale);
 		}
 		if(Variation === 3){
-			Background3(3, Scale);
+			Icon3(3, Scale);
 		}
 	}
 	pop();
@@ -849,43 +899,36 @@ function Amphora3(Scale){
 
 function Icon2(Variation,Scale){
 	if(Variation === 1){
-		Collumn1(Scale);
+		Column1(Scale);
 	}
 	if(Variation === 2){
-		Collumn2(Scale);
+		Column2(Scale);
 	}
 	if(Variation === 3){
-		Collumn3(Scale);
+		Column3(Scale);
 	}
 }
-function Collumn1(Scale){
-let SquareSize = Scale / 16;
+function Column1(Scale){
+let SquareSize = Scale / 18;
 let Squares = [
-[3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
-[3,3,3,2,0,2,2,2,2,2,2,2,2,2,2,0,2,3,3,3],
-[3,3,3,2,0,0,2,2,2,2,2,2,2,2,0,0,2,3,3,3],
-[3,3,3,2,2,2,2,2,0,2,0,2,0,2,2,2,2,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3,3],
-[3,2,3,2,3,0,0,0,1,1,1,3,2,3,2,3],
-[3,2,3,3,0,0,0,1,1,1,1,1,3,3,2,3],
-[3,2,3,0,0,0,0,1,1,1,1,1,1,3,2,3],
-[3,3,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
-[3,3,0,0,0,2,0,1,1,1,2,1,1,1,3,3],
-[3,3,2,2,0,2,0,2,2,1,2,1,2,2,3,3],
-[3,3,2,2,0,0,0,2,2,1,1,1,2,2,3,3],
-[3,3,3,2,2,2,2,2,2,2,2,2,2,3,3,3],
-[3,3,3,3,0,0,0,1,1,1,1,1,3,3,3,3],
-[3,3,3,3,3,0,0,0,1,1,1,3,3,3,3,3],
-[3,3,3,3,3,3,0,0,1,1,3,3,3,3,3,3],
-[3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3],
-[3,3,3,3,3,2,2,2,2,2,2,3,3,3,3,3]
+	[0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+	[0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2],
+	[3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3],
+	[3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,3,3],
+	[3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,3,3,3],
+	[3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,3,3,3],
+	[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+	[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+	[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3]
 ];
 
 for (let row = 0; row < Squares.length; row ++){
@@ -911,30 +954,25 @@ for (let column = 0; column < Squares[row].length; column ++){
 function Collumn2(Scale){
 let SquareSize = Scale / 24;
 let Squares = [
-[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
-[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
-[3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
-[3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
-[3,1,1,1,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,1,1,1,3],
-[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-[1,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,1],
-[1,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,1],
-[3,1,1,1,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,1,1,1,3],
-[3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3],
-[3,3,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
-[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
-[3,3,0,0,0,0,1,1,1,2,2,2,2,2,2,1,1,1,2,2,2,2,3,3],
-[3,3,1,1,1,0,1,1,1,2,1,1,1,1,2,1,1,1,2,1,1,1,3,3],
-[3,3,1,1,1,0,0,2,2,2,1,1,1,1,2,2,2,2,2,1,1,1,3,3],
-[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
-[3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3],
-[3,3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3],
-[3,3,3,3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
-[3,3,3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,2,2,3,3,3,3,3],
-[3,3,3,3,3,3,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,3],
-[3,3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3],
-[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
-[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+	[0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+	[0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2],
+	[3,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,3],
+	[3,3,2,0,0,0,0,0,2,2,2,2,2,2,2,2,3,3],
+	[3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,3,3,3],
+	[3,3,3,0,0,0,0,0,2,2,2,2,2,2,2,3,3,3],
+	[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+	[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+	[3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],
+	[3,3,3,0,2,0,2,0,2,0,2,0,2,0,2,3,3,3],	
+
 ];
 
 for (let row = 0; row < Squares.length; row ++){
