@@ -1,28 +1,28 @@
 // Your parameter variables go here!
-let CanvasX = 333;
-let CanvasY = 333;
+let CanvasX = 200;
+let CanvasY = 200;
 let Grid = false;
 let GridOffset = 0;
-let ReadyToPrint = true;
+let ReadyToPrint = false;
 let BorderType = 1; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth
 let BorderStyle = 1; //1 Four Side or 2 Rows or 3 Columns
-let BorderThickness = 100; //Thickness of one strip of the border
-let BorderDouble = false;
-let BorderColour1 = ('#329085');
-let BorderColour2 = ('#0c7c59');
-let BorderColour3 = ('#1C564A');
-let BackgroundType = 1; //1 PeaksNValleys or 2 CautionTape or 3 Crosses
+let BorderThickness = 25; //Thickness of one strip of the border
+let BorderDouble = true;
+let BorderColour1 = (0);
+let BorderColour2 = (125);
+let BorderColour3 = (255);
+let BackgroundType = 0; //1 PeaksNValleys or 2 CautionTape or 3 Crosses
 let BackgroundVariation = 1;  //1 low detail or 2 and 3 high detail
 let BackgroundScale = 100;
-let BackgroundColour1 = ('#BAC1B8');
-let BackgroundColour2 = ('#89B3B4');
-let BackgroundColour3 = ('#58A4B0'); //only available for variation 3
-let IconType = 1; //1 Amphora or 2 Column
+let BackgroundColour1 = (0);
+let BackgroundColour2 = (125);
+let BackgroundColour3 = (255); //only available for variation 3
+let IconType = 0; //1 Amphora or 2 Column
 let IconVariation = 2; // 1 or 2 or 3 (only 1 Column Variation)
 let IconScale = 200;
-let IconColour1 = ('#2B303A');
-let IconColour2 = ('#813D37');
-let IconColour3 = ('#D64933');
+let IconColour1 = (0);
+let IconColour2 = (125);
+let IconColour3 = (255);
 function setup_wallpaper(pWallpaper) {
   if (Grid === true) {
     pWallpaper.output_mode(GRID_WALLPAPER);
@@ -30,7 +30,7 @@ function setup_wallpaper(pWallpaper) {
     pWallpaper.output_mode(DEVELOP_GLYPH);
   }
 
-  pWallpaper.resolution(NINE_LANDSCAPE);
+  pWallpaper.resolution(FIT_TO_SCREEN);
 
   if (ReadyToPrint === true) {
     pWallpaper.show_guide(false);
