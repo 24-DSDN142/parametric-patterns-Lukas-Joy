@@ -1,36 +1,36 @@
 // Your parameter variables go here!
-let CanvasX = 500;
-let CanvasY = 500;
+let CanvasX = 333;
+let CanvasY = 333;
 let Grid = true;
 let GridOffset = 0;
 let ReadyToPrint = true;
-let BorderType = 1; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth
+let BorderType = 2; //1 Spirals or 2 SnakesNPillars or 3 Labyrinth
 let BorderStyle = 1; //1 Four Side or 2 Rows or 3 Columns
-let BorderThickness = 150; //Thickness of one strip of the border
-let BorderDouble = false;
-let BorderColour1 = [1,1,1];
-let BorderColour2 = [135,120,170];
-let BorderColour3 = [255, 255, 255];
+let BorderThickness = 50; //Thickness of one strip of the border
+let BorderDouble = true;
+let BorderColour1 = ('#2C6E49');
+let BorderColour2 = ('#3C825B');
+let BorderColour3 = ('#4C956C');
 let BackgroundType = 1; //1 PeaksNValleys or 2 CautionTape or 3 Crosses
-let BackgroundVariation = 1;  //1 low detail or 2 and 3 high detail
-let BackgroundScale = 100;
-let BackgroundColour1 = [0,0,0];
-let BackgroundColour2 = [125,200,132];
-let BackgroundColour3 = [255,255,255]; //only available for variation 3
+let BackgroundVariation = 3;  //1 low detail or 2 and 3 high detail
+let BackgroundScale = 111;
+let BackgroundColour1 = ('#FFE4CE');
+let BackgroundColour2 = ('#F9CEBA');
+let BackgroundColour3 = ('#F3B8A6'); //only available for variation 3
 let IconType = 1; //1 Amphora or 2 Column
-let IconVariation = 2; // 1 or 2 or 3 (only 1 Column Variation)
-let IconScale = 300;
-let IconColour1 = [0,0,0];
-let IconColour2 = [125,123,132];
-let IconColour3 = [255,255,255];
+let IconVariation = 3; // 1 or 2 or 3 (only 1 Column Variation)
+let IconScale = 150;
+let IconColour1 = ('#EAC594');
+let IconColour2 = ('#D68C45');
+let IconColour3 = ('#E0A96D');
 function setup_wallpaper(pWallpaper) {
-  if (Grid === true) {
+  if (Grid === true) { 
     pWallpaper.output_mode(GRID_WALLPAPER);
   } else {
     pWallpaper.output_mode(DEVELOP_GLYPH);
   }
 
-  pWallpaper.resolution(FIT_TO_SCREEN);
+  pWallpaper.resolution(NINE_LANDSCAPE);
 
   if (ReadyToPrint === true) {
     pWallpaper.show_guide(false);
@@ -42,9 +42,6 @@ function setup_wallpaper(pWallpaper) {
   pWallpaper.grid_settings.cell_width = CanvasX;
   pWallpaper.grid_settings.cell_height = CanvasY;
   pWallpaper.grid_settings.row_offset = GridOffset;
-
-  //Other Settings
-  colorMode(RGB, 255)
 }
 function wallpaper_background() {
   background(240, 255, 240); // light honeydew green color
@@ -132,10 +129,12 @@ function createBorder(Type, Style, BorderThickness){
 			push();
 			Border1(0, 0, 0, BorderThickness);
 			Spiral((8 * BorderThickness / 11),BorderThickness);
+			Spiral((8 * BorderThickness / 11),BorderThickness);
 			pop();
 	
 			push()
 			Border1(CanvasX,CanvasY,180,BorderThickness);
+			Spiral(8 * BorderThickness / 11,BorderThickness);
 			Spiral(8 * BorderThickness / 11,BorderThickness);
 			pop();
 		}
@@ -143,11 +142,14 @@ function createBorder(Type, Style, BorderThickness){
 			push();
 			Border2(0, 0, 0, BorderThickness);
 			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
+			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
 			pop();
 			
 			push();
 			Border2(CanvasX,CanvasY,180,BorderThickness);
 			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
+			SnakesNPillars(16 * (BorderThickness / 17),BorderThickness);
+
 			pop();
 		}
 		if(Type === 3){
@@ -167,12 +169,26 @@ function createBorder(Type, Style, BorderThickness){
 		if(Type === 1){
 			push();
 			Border1(BorderThickness, 0, 90, BorderThickness);
+			pop();
+	
+			push()
+			rotate(90);
+			translate(-2*BorderThickness,-BorderThickness)
 			Spiral(8 * BorderThickness / 11,BorderThickness);
+			Spiral(8 * BorderThickness / 11,BorderThickness);
+
 			pop();
 	
 			push()
 			Border1(CanvasX-BorderThickness,CanvasY,270, BorderThickness);
+			
+			pop();
+			push()
+			rotate(-90);
+			translate(-2*BorderThickness,-BorderThickness)
 			Spiral(8 * BorderThickness / 11,BorderThickness);
+			Spiral(8 * BorderThickness / 11,BorderThickness);
+
 			pop();
 		}
 		if(Type === 2){
@@ -295,7 +311,6 @@ function createBorder(Type, Style, BorderThickness){
 			if(Type === 3){
 				push();
 				Border3(0, -BorderThickness/2, 0, BorderThickness);
-				Labyrinth(-21 * BorderThickness / 9,-BorderThickness/2);
 				pop();
 				push()
 				translate(-21 * BorderThickness / 9,-BorderThickness/2)
@@ -357,12 +372,6 @@ function createBorder(Type, Style, BorderThickness){
 				rotate(90)
 				Labyrinth(0,BorderThickness);
 				pop();
-
-				push();
-				Border3(BorderThickness, 0, 90, BorderThickness);
-				Labyrinth(21 * BorderThickness / 9,BorderThickness);
-				pop();
-				
 			}
 	
 		}
@@ -421,23 +430,6 @@ function createIcon(Type, Variation, Scale){
 	if(Type === 2){
 		if(Variation === 1){
 			Icon2(1, Scale);
-		}
-		if(Variation === 2){
-			Icon2(2, Scale);
-		}
-		if(Variation === 3){
-			Icon2(3, Scale);
-		}
-	}
-	if(Type === 3){
-		if(Variation === 1){
-			Icon3(1, Scale);
-		}
-		if(Variation === 2){
-			Icon3(2, Scale);
-		}
-		if(Variation === 3){
-			Icon3(3, Scale);
 		}
 	}
 	pop();
